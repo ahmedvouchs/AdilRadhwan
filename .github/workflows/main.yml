@@ -1,4 +1,4 @@
-name: TOOLBOXLAP
+namename: TOOLBOXLAP
 
 on:
   workflow_dispatch:
@@ -7,16 +7,33 @@ jobs:
   build:
     name: Start Building...
     runs-on: windows-latest
-    timeout-minutes: 500
+    timeout-minutes: 360
     
     steps:
-      - name: Downloading & Installing Essentials
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Run Downloads.bat (تثبيت أدوات أساسية)
         run: |
-          Invoke-WebRequest -Uri "https://gitlab.com/raposabrty/pcrdp/-/raw/main/Downloads.bat" -OutFile "Downloads.bat"
-          cmd /c Downloads.bat
+          echo @echo off > scripts\Downloads.bat
+          echo echo بدء تثبيت الأدوات الأساسية... >> scripts\Downloads.bat
+          echo choco install git -y >> scripts\Downloads.bat
+          echo choco install curl -y >> scripts\Downloads.bat
+          echo echo تم تثبيت الأدوات. >> scripts\Downloads.bat
+          cmd /c scripts\Downloads.bat
 
-      - name: Show Website
-        run: cmd /c show.bat
+      - name: Run Show Website (فتح موقع)
+        run: |
+          echo @echo off > scripts\show.bat
+          echo echo فتح الموقع المطلوب... >> scripts\show.bat
+          echo start microsoft-edge:https://example.com >> scripts\show.bat
+          cmd /c scripts\show.bat
 
-      - name: Time Counter
-        run: cmd /c loop.bat
+      - name: Run Time Counter loop (ابقاء الجلسة شغالة)
+        run: |
+          echo @echo off > scripts\loop.bat
+          echo echo بدء مؤقت الجلسة... >> scripts\loop.bat
+          echo :loop >> scripts\loop.bat
+          echo timeout /t 60 ^>nul >> scripts\loop.bat
+          echo goto loop >> scripts\loop.bat
+          start /b cmd /c scripts\loop.bat
