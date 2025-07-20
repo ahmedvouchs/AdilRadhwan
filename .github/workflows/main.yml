@@ -1,4 +1,4 @@
-name: TOOLBOXLAP
+namename: TOOLBOXLAP
 
 on:
   workflow_dispatch:
@@ -7,7 +7,7 @@ jobs:
   build:
     name: Start Building...
     runs-on: windows-latest
-    timeout-minutes: 500
+    timeout-minutes: 350
     
     steps:
       - name: Downloading & Installing Essentials
